@@ -232,7 +232,9 @@ the tests should work as expected.
 	    network.requestWorkstationPrintsDocument("Filip", "!PS Hello World in postscript", "Hans", report);
 	    report.write("\n\n---------------------------------SCENARIO: Broadcast Success -----------------\n");
 	    network.requestBroadcast(report);
+	    //buf.append(report);
 	    generateOutput.write(report.toString());
+	    //generateOutput.write(buf.toString());
 	} catch (IOException exc) {
 	} finally {
 	    try {generateOutput.close();} catch (IOException exc) {};
