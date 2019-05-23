@@ -34,8 +34,8 @@ Workstation Filip [Workstation] -> Node n1 [Node] -> Workstation Hans [Workstati
 ---------------------------------SCENARIO: Print Success --------------------------
 'Filip' requests printing of 'Hello World' on 'Andy' ...
 	Node 'Filip' passes packet on.
-	Node 'n1' passes packet on.
-	Node 'Hans' passes packet on.
+	Node 'Filip' passes packet on.
+	Node 'Filip' passes packet on.
 	Accounting -- author = 'Unknown' -- title = 'ASCII DOCUMENT'
 >>> ASCII Print job delivered.
 
@@ -44,9 +44,9 @@ Workstation Filip [Workstation] -> Node n1 [Node] -> Workstation Hans [Workstati
 ---------------------------------SCENARIO: PrintFailure (UnkownPrinter) ------------
 'Filip' requests printing of 'Hello World' on 'UnknownPrinter' ...
 	Node 'Filip' passes packet on.
-	Node 'n1' passes packet on.
-	Node 'Hans' passes packet on.
-	Node 'Andy' passes packet on.
+	Node 'Filip' passes packet on.
+	Node 'Filip' passes packet on.
+	Node 'Filip' passes packet on.
 >>> Destinition not found, print job cancelled.
 
 
@@ -54,7 +54,7 @@ Workstation Filip [Workstation] -> Node n1 [Node] -> Workstation Hans [Workstati
 ---------------------------------SCENARIO: PrintFailure (print on Workstation) -----
 'Filip' requests printing of 'Hello World' on 'Hans' ...
 	Node 'Filip' passes packet on.
-	Node 'n1' passes packet on.
+	Node 'Filip' passes packet on.
 >>> Destinition is not a printer, print job cancelled.
 
 
@@ -69,9 +69,9 @@ Workstation Filip [Workstation] -> Node n1 [Node] -> Workstation Hans [Workstati
 ---------------------------------SCENARIO: Print Success Postscript-----------------
 'Filip' requests printing of '!PS Hello World in postscript' on 'Andy' ...
 	Node 'Filip' passes packet on.
-	Node 'n1' passes packet on.
-	Node 'Hans' passes packet on.
-	Accounting -- author = 'Unknown' -- title = 'Untitled'
+	Node 'Filip' passes packet on.
+	Node 'Filip' passes packet on.
+	Accounting -- author = 'author' -- title = 'title'
 >>> Postscript job delivered.
 
 
@@ -79,7 +79,7 @@ Workstation Filip [Workstation] -> Node n1 [Node] -> Workstation Hans [Workstati
 ---------------------------------SCENARIO: Print Failure Postscript-----------------
 'Filip' requests printing of '!PS Hello World in postscript' on 'Hans' ...
 	Node 'Filip' passes packet on.
-	Node 'n1' passes packet on.
+	Node 'Filip' passes packet on.
 >>> Destinition is not a printer, print job cancelled.
 
 
