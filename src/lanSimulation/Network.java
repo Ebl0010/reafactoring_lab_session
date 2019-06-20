@@ -172,7 +172,7 @@ which should be treated by all nodes.
 		Node currentNode = firstNode_;
 		Packet packet = new Packet("BROADCAST", firstNode_.name_, firstNode_.name_);
 		do {
-			loggin(report, currentNode, 1);
+			currentNode.loggin(report, 1);
 			currentNode = currentNode.nextNode_;
 		} while (! packet.destination_.equals(currentNode.name_));
 
@@ -184,26 +184,6 @@ which should be treated by all nodes.
 		return true;
 	}
 
-	/**
-	 * @param report
-	 * @param currentNode
-	 */
-	private void loggin(Writer report, Node currentNode, int metodo) {
-		try {
-			report.write("\tNode '");
-			report.write(currentNode.name_);
-			if (metodo == 1) {
-				report.write("' accepts broadcase packet.\n");
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-			}
-			report.write("' passes packet on.\n");
-			report.flush();
-		} catch (IOException exc) {
-			// just ignore
-		};
-	}    
-	
 	/**
 The #receiver is requested by #workstation to print #document on #printer.
 Therefore #receiver sends a packet across the token ring network, until either
@@ -237,13 +217,13 @@ Therefore #receiver sends a packet across the token ring network, until either
 
 		startNode = (Node) workstations_.get(workstation);
 
-		loggin(report, startNode, 2);
+		startNode.loggin(report, 2);
 		
 		currentNode = startNode.nextNode_;
 		while ((! packet.destination_.equals(currentNode.name_))
 				& (! packet.origin_.equals(currentNode.name_))) {
 			
-			loggin(report, startNode, 2);
+			startNode.loggin(report, 2);
 			
 			currentNode = currentNode.nextNode_;
 		};
