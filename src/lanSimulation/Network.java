@@ -229,7 +229,7 @@ Therefore #receiver sends a packet across the token ring network, until either
 		};
 
 		if (packet.destination_.equals(currentNode.name_)) {
-			result = printDocument(currentNode, packet, report);
+			result = packet.printDocument(this, currentNode, report);
 		} else {
 			try {
 				report.write(">>> Destinition not found, print job cancelled.\n\n");
@@ -243,44 +243,12 @@ Therefore #receiver sends a packet across the token ring network, until either
 		return result;
 	}
 
-	private boolean printDocument (Node printer, Packet document, Writer report) {
-		String author = "Unknown";
-		String title = "Untitled";
-
-		if(printer.type_ == Node.PRINTER){
-			try{
-				if(document.message_.startsWith("!PS")){
-					author=getAttribute(document, "author", 7);
-					title=getAttribute(document, "title", 6);
-					completeReport(report, author, title, "Postscript");
-				}else{
-					title = "ASCII DOCUMENT";
-					if(document.message_.length() >= 16){
-						author = document.message_.substring(8, 16);
-					}
-					completeReport(report, author, title, "ASCII Print");
-				}
-			}catch(IOException exc){
-				// just ignore
-			}
-			return true;
-		}else{
-			try{
-				report.write(">>> Destinition is not a printer, print job cancelled.\n\n");
-				report.flush();
-			}catch(IOException exc){
-				// just ignore
-			}
-			return false;
-		}
-	}
-
 	/**
 	 * @param document
 	 * @param author
 	 * @return
 	 */
-	private String getAttribute(Packet document, String attribute, int pos) {
+	public String getAttribute(Packet document, String attribute, int pos) {
 		int startPos=0;
 		int endPos=0;
 		startPos = document.message_.indexOf(attribute+":");
@@ -300,7 +268,7 @@ Therefore #receiver sends a packet across the token ring network, until either
 	 * @param title
 	 * @throws IOException
 	 */
-	private void completeReport(Writer report, String author, String title, String type) throws IOException{
+	public void completeReport(Writer report, String author, String title, String type) throws IOException{
 		report.write("\tAccounting -- author = '");
 		report.write(author);
 		report.write("' -- title = '");
