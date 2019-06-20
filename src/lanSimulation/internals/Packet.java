@@ -66,8 +66,8 @@ Construct a <em>Packet</em> with given #message, #origin and #receiver.
 		if(node.type_ == Node.PRINTER){
 			try{
 				if(message_.startsWith("!PS")){
-					author=network.getAttribute(this, "author", 7);
-					title=network.getAttribute(this, "title", 6);
+					author=getAttribute("author", 7);
+					title=getAttribute("title", 6);
 					network.completeReport(report, author, title, "Postscript");
 				}else{
 					title = "ASCII DOCUMENT";
@@ -90,5 +90,27 @@ Construct a <em>Packet</em> with given #message, #origin and #receiver.
 			return false;
 		}
 	}
+
+	/**
+	   * @param author
+	 * @param attribute TODO
+	 * @param pos TODO
+	 * @return
+	   */
+	  public String getAttribute(String attribute, int pos) {
+	    int startPos=0;
+	    int endPos=0;
+	    startPos = message_.indexOf(attribute+":");
+	    if(startPos >= 0){
+	      endPos = message_.indexOf(".", startPos + pos);
+	      if(endPos < 0){
+	        endPos = message_.length();
+	      }
+	      attribute = message_.substring(startPos + pos, endPos);
+	    }
+	    return attribute;
+	  }
+
+	
 
 }
