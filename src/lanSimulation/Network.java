@@ -144,7 +144,7 @@ A consistent token ring network
 			encountered.put(currentNode.name_, currentNode);
 			if (currentNode.type_ == Node.WORKSTATION) {workstationsFound++;};
 			if (currentNode.type_ == Node.PRINTER) {printersFound++;};
-			currentNode = currentNode.nextNode_;
+			currentNode = send(currentNode);
 		};
 		if (currentNode != firstNode_) {return false;};//not circular
 		if (printersFound == 0) {return false;};//does not contain a printer
@@ -173,7 +173,7 @@ which should be treated by all nodes.
 		Packet packet = new Packet("BROADCAST", firstNode_.name_, firstNode_.name_);
 		do {
 			currentNode.loggin(report, 1);
-			currentNode = currentNode.nextNode_;
+			currentNode = send(currentNode);
 		} while (! packet.destination_.equals(currentNode.name_));
 
 		try {
@@ -182,6 +182,15 @@ which should be treated by all nodes.
 			// just ignore
 		};
 		return true;
+	}
+
+	/**
+	 * @param currentNode
+	 * @return
+	 */
+	private Node send(Node currentNode) {
+		currentNode = currentNode.nextNode_;
+		return currentNode;
 	}
 
 	/**
@@ -225,9 +234,22 @@ Therefore #receiver sends a packet across the token ring network, until either
 			
 			startNode.loggin(report, 2);
 			
-			currentNode = currentNode.nextNode_;
+			currentNode = send(currentNode);
 		};
 
+		result = atDestination(report, currentNode, packet);
+
+		return result;
+	}
+
+	/**
+	 * @param report
+	 * @param currentNode
+	 * @param packet
+	 * @return
+	 */
+	private boolean atDestination(Writer report, Node currentNode, Packet packet) {
+		boolean result;
 		if (packet.destination_.equals(currentNode.name_)) {
 			result = packet.printDocument(this, currentNode, report);
 		} else {
@@ -239,7 +261,6 @@ Therefore #receiver sends a packet across the token ring network, until either
 			};
 			result = false;
 		}
-
 		return result;
 	}
 	
