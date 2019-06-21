@@ -63,7 +63,7 @@ Construct a <em>Packet</em> with given #message, #origin and #receiver.
 		String author = "Unknown";
 		String title = "Untitled";
 	
-		if(node.type_ == Node.PRINTER){
+		if(node instanceof Printer){
 			try{
 				if(message_.startsWith("!PS")){
 					author=getAttribute("author", 7);

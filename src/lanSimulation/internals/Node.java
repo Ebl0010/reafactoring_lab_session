@@ -29,24 +29,24 @@ A <em>Node</em> represents a single Node in a Local Area Network (LAN).
 Several types of Nodes exist.
  */
 public class Node {
-	//enumeration constants specifying all legal node types
-	/**
-    A node with type NODE has only basic functionality.
-	 */
-	public static final byte NODE = 0;
-	/**
-    A node with type WORKSTATION may initiate requests on the LAN.
-	 */
-	public static final byte WORKSTATION = 1;
-	/**
-    A node with type PRINTER may accept packages to be printed.
-	 */
-	public static final byte PRINTER = 2;
-
-	/**
-    Holds the type of the Node.
-	 */
-	public byte type_;
+//	//enumeration constants specifying all legal node types
+//	/**
+//    A node with type NODE has only basic functionality.
+//	 */
+//	public static final byte NODE = 0;
+//	/**
+//    A node with type WORKSTATION may initiate requests on the LAN.
+//	 */
+//	public static final byte WORKSTATION = 1;
+//	/**
+//    A node with type PRINTER may accept packages to be printed.
+//	 */
+//	public static final byte PRINTER = 2;
+//
+//	/**
+//    Holds the type of the Node.
+//	 */
+//	public byte type_;
 	/**
     Holds the name of the Node.
 	 */
@@ -61,9 +61,7 @@ public class Node {
 Construct a <em>Node</em> with given #type and #name.
 <p><strong>Precondition:</strong> (type >= NODE) & (type <= PRINTER);</p>
 	 */
-	public Node(byte type, String name) {
-		assert (type >= NODE) & (type <= PRINTER);
-		type_ = type;
+	public Node(String name) {
 		name_ = name;
 		nextNode_ = null;
 	}
@@ -72,9 +70,7 @@ Construct a <em>Node</em> with given #type and #name.
 Construct a <em>Node</em> with given #type and #name, and which is linked to #nextNode.
 <p><strong>Precondition:</strong> (type >= NODE) & (type <= PRINTER);</p>
 	 */
-	public Node(byte type, String name, Node nextNode) {
-		assert (type >= NODE) & (type <= PRINTER);
-		type_ = type;
+	public Node(String name, Node nextNode) {
 		name_ = name;
 		nextNode_ = nextNode;
 	}
@@ -102,44 +98,32 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 	/**
 	Write a printable representation of #receiver on the given #buf.
 	<p><strong>Precondition:</strong> isInitialized();</p>
-	 * @param network TODO
-	 * @param buf TODO
+	 * @param network
+	 * @param buf
 	 */
 	public void printOn (Network network, StringBuffer buf) {
-		assert network.isInitialized();
-		Node currentNode = this;
-		do {
-			switch (currentNode.type_) {
-			case Node.NODE:
+		if(this instanceof WorkStation || this instanceof Printer) {
+			// just ignore
+		}else{
+			assert network.isInitialized();
+			
+			Node currentNode = this;
+			do {
 				buf.append("Node ");
-				buf.append(currentNode.name_);
+				buf.append(this.name_);
 				buf.append(" [Node]");
-				break;
-			case Node.WORKSTATION:
-				buf.append("Workstation ");
-				buf.append(currentNode.name_);
-				buf.append(" [Workstation]");
-				break;
-			case Node.PRINTER:
-				buf.append("Printer ");
-				buf.append(currentNode.name_);
-				buf.append(" [Printer]");
-				break;
-			default:
-				buf.append("(Unexpected)");;
-				break;
-			};
-			buf.append(" -> ");
-			currentNode = currentNode.nextNode_;
-		} while (currentNode != this);
-		buf.append(" ... ");
+				buf.append(" -> ");
+				currentNode = currentNode.nextNode_;
+			} while (currentNode != this);
+			buf.append(" ... ");
+		}
 	}
 
 	/**
 	Write a HTML representation of #receiver on the given #buf.
 	<p><strong>Precondition:</strong> isInitialized();</p>
-	 * @param network TODO
-	 * @param buf TODO
+	 * @param network
+	 * @param buf
 	 */
 	public void printHTMLOn (Network network, StringBuffer buf) {
 		assert network.isInitialized();
@@ -149,26 +133,9 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 		buf.append("\n\n<UL>");
 		do {
 			buf.append("\n\t<LI> ");
-			switch (currentNode.type_) {
-			case Node.NODE:
-				buf.append("Node ");
-				buf.append(currentNode.name_);
-				buf.append(" [Node]");
-				break;
-			case Node.WORKSTATION:
-				buf.append("Workstation ");
-				buf.append(currentNode.name_);
-				buf.append(" [Workstation]");
-				break;
-			case Node.PRINTER:
-				buf.append("Printer ");
-				buf.append(currentNode.name_);
-				buf.append(" [Printer]");
-				break;
-			default:
-				buf.append("(Unexpected)");;
-				break;
-			};
+			buf.append("Node ");
+			buf.append(this.name_);
+			buf.append(" [Node]");
 			buf.append(" </LI>");
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != this);
@@ -178,8 +145,8 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 	/**
 	Write an XML representation of #receiver on the given #buf.
 	<p><strong>Precondition:</strong> isInitialized();</p>
-	 * @param network TODO
-	 * @param buf TODO
+	 * @param network
+	 * @param buf
 	 */
 	public void printXMLOn (Network network, StringBuffer buf) {
 		assert network.isInitialized();
@@ -188,31 +155,12 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 		buf.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<network>");
 		do {
 			buf.append("\n\t");
-			switch (currentNode.type_) {
-			case Node.NODE:
-				buf.append("<node>");
-				buf.append(currentNode.name_);
-				buf.append("</node>");
-				break;
-			case Node.WORKSTATION:
-				buf.append("<workstation>");
-				buf.append(currentNode.name_);
-				buf.append("</workstation>");
-				break;
-			case Node.PRINTER:
-				buf.append("<printer>");
-				buf.append(currentNode.name_);
-				buf.append("</printer>");
-				break;
-			default:
-				buf.append("<unknown></unknown>");;
-				break;
-			};
+			buf.append("<node>");
+			buf.append(currentNode.name_);
+			buf.append("</node>");
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != this);
 		buf.append("\n</network>");
 	}
-
-	
 
 }
