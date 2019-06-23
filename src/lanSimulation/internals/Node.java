@@ -102,21 +102,23 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 	 * @param buf
 	 */
 	public void printOn (Network network, StringBuffer buf) {
-		if(this instanceof WorkStation || this instanceof Printer) {
-			// just ignore
-		}else{
-			assert network.isInitialized();
+		assert network.isInitialized();
+		
+		Node currentNode = this;
+		do {
 			
-			Node currentNode = this;
-			do {
-				buf.append("Node ");
-				buf.append(this.name_);
-				buf.append(" [Node]");
-				buf.append(" -> ");
-				currentNode = currentNode.nextNode_;
-			} while (currentNode != this);
-			buf.append(" ... ");
-		}
+			String s = printType()+" ";
+			buf.append(s);
+		
+			buf.append(this.name_);
+			
+			s = " ["+printType()+"]";
+			buf.append(s);
+			
+			buf.append(" -> ");
+			currentNode = currentNode.nextNode_;
+		} while (currentNode != this);
+		buf.append(" ... ");
 	}
 
 	/**
@@ -133,9 +135,15 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 		buf.append("\n\n<UL>");
 		do {
 			buf.append("\n\t<LI> ");
-			buf.append("Node ");
+			
+			String s = printType()+" ";
+			buf.append(s);
+		
 			buf.append(this.name_);
-			buf.append(" [Node]");
+			
+			s = " ["+printType()+"]";
+			buf.append(s);
+			
 			buf.append(" </LI>");
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != this);
@@ -155,12 +163,21 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 		buf.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<network>");
 		do {
 			buf.append("\n\t");
-			buf.append("<node>");
+			
+			String s = "<"+printType()+">";
+			
 			buf.append(currentNode.name_);
+			
 			buf.append("</node>");
+			
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != this);
 		buf.append("\n</network>");
 	}
+	
+	public String printType() {
+		return "Node";
+	}
+	
 
 }
