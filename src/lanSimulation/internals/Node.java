@@ -107,13 +107,10 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 		Node currentNode = this;
 		do {
 			
-			String s = printType()+" ";
-			buf.append(s);
-		
+			buf.append("Node ");
+			buf.append(currentNode.name_);
 			buf.append(this.name_);
-			
-			s = " ["+printType()+"]";
-			buf.append(s);
+			buf.append(" [Node]");
 			
 			buf.append(" -> ");
 			currentNode = currentNode.nextNode_;
@@ -136,13 +133,9 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 		do {
 			buf.append("\n\t<LI> ");
 			
-			String s = printType()+" ";
-			buf.append(s);
-		
-			buf.append(this.name_);
-			
-			s = " ["+printType()+"]";
-			buf.append(s);
+			buf.append("Node ");
+			buf.append(currentNode.name_);
+			buf.append(" [Node]");
 			
 			buf.append(" </LI>");
 			currentNode = currentNode.nextNode_;
@@ -164,20 +157,13 @@ Construct a <em>Node</em> with given #type and #name, and which is linked to #ne
 		do {
 			buf.append("\n\t");
 			
-			String s = "<"+printType()+">";
-			
+			buf.append("<node>");
 			buf.append(currentNode.name_);
-			
 			buf.append("</node>");
 			
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != this);
 		buf.append("\n</network>");
 	}
-	
-	public String printType() {
-		return "Node";
-	}
-	
 
 }
